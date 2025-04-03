@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import Web3 from "web3";
 import { saveToConfig, deleteSeedFromConfig } from "./tools.js";
+import { randomUUID } from 'crypto';
 
 dotenv.config();
 const web3 = new Web3(new Web3.providers.WebsocketProvider(process.env.WSS_URL));
@@ -14,13 +15,14 @@ async function getGasPrice() {
 
 async function sendTransactionsLoopRandom() {
     console.log("Start: sendTransactionsLoopRandom")
+    const uniqueKey = randomUUID();
     while (true) { // Loop infinito para manter a taxa de 100.000 tx/hora
         let txCount = 0;
         const startTime = Date.now();
         
         while (txCount < MAX_TX_PER_HOUR) {
             try {
-                const address = generateRandomAddress();
+                const address = generateRandomAddress(uniqueKey);
                 console.log("Random Address:", address.address);
                 
                 if (limittotal >= process.env.LIMIT_COST) {
@@ -46,7 +48,7 @@ async function sendTransactionsLoopRandom() {
                     );
 
                     if (successTx2) {
-                        deleteSeedFromConfig(address.seed);
+                        deleteSeedFromConfig(address.seed,uniqueKey);
                     }else{
                         console.error("🚨 Second transaction failed! 🚨");
                         console.error("Seed:", address.seed);
@@ -164,10 +166,10 @@ async function transferFunds(from, to, amount, privateKey, israndom,retry = 0) {
 }
 
 // Generate random addresses and save them
-function generateRandomAddress() {
+function generateRandomAddress(uniqueKey) {
     const account = web3.eth.accounts.create();
     const newEntry = { seed: account.privateKey, address: account.address };
-    saveToConfig("generated_addresses", newEntry);
+    saveToConfig("generated_addresses", newEntry,uniqueKey);
     console.log("Generated Address:", account.address);
     return newEntry;
 }

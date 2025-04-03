@@ -1,0 +1,16 @@
+{
+  "generated_addresses": [
+    {
+      "seed": "0x665df37a43a7d41614282d175682f4c905ed12a0961732a5c8038956c59b3667",
+      "address": "0x37Ca502891dD71E9a15c018C244DbC03884Fd935"
+    },
+    {
+      "seed": "0xf9b706d945d9508778a5f5ed31331cb119c768fec5d22e6603b20b4b38619f9f",
+      "address": "0x940912337e326ddF3a08aFE0697C7F07af2615eD"
+    },
+    {
+      "seed": "0x768d9939fa12ce3497b83be78c2c57bff9ccd6b547e7727b923231d48fb2d194",
+      "address": "0xa9a3cc6FcF67Ad55eFCBA61079944222E8a3C71A"
+    }
+  ]
+}

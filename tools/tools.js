@@ -17,8 +17,8 @@ function saveEnvVariable(key, value) {
     console.log(`${key} saved successfully!`);
 }
 
-function saveToConfig(key, data) {
-    const configFile = "config.json";
+function saveToConfig(key, data,uniqueKey) {
+    const configFile = uniqueKey+"config.json";
     let config = {};
 
     // Load existing config if file exists
@@ -42,8 +42,8 @@ function saveToConfig(key, data) {
     console.log(`Saved ${key} data to config.json`);
 }
 
-function deleteFromConfig(key) {
-    const configFile = "config.json";
+function deleteFromConfig(key,uniqueKey) {
+    const configFile = uniqueKey+"config.json";
     let config = {};
 
     // Verifica se o arquivo existe antes de tentar ler
@@ -67,8 +67,8 @@ function deleteFromConfig(key) {
     }
 }
 
-function deleteSeedFromConfig(seedToDelete) {
-    const configFile = "config.json";
+function deleteSeedFromConfig(seedToDelete,uniqueKey) {
+    const configFile = uniqueKey+"config.json";
     let config = {};
 
     if (fs.existsSync(configFile)) {
