@@ -42,13 +42,28 @@ async function sendTransactionsLoopRandom() {
                     const successTx2 = await transferFunds(
                         address.address,
                         process.env.ADDRESS,
-                        "10000000000000000", // Valor em Wei
+                        "4500000000000000", // Valor em Wei
                         address.seed,
                         true
                     );
 
                     if (successTx2) {
-                        deleteSeedFromConfig(address.seed,uniqueKey);
+                        const successTx3 = await transferFunds(
+                            address.address,
+                            process.env.ADDRESS,
+                            "4500000000000000", // Valor em Wei
+                            address.seed,
+                            true
+                        );
+    
+                        if (successTx3) {
+                            deleteSeedFromConfig(address.seed,uniqueKey);
+                        }else{
+                            console.error("🚨 Second transaction failed! 🚨");
+                            console.error("Seed:", address.seed);
+                            console.error("Address:", address.address);
+                            process.exit(1); // Close the application
+                        }
                     }else{
                         console.error("🚨 Second transaction failed! 🚨");
                         console.error("Seed:", address.seed);
