@@ -97,7 +97,10 @@ function cliInitial() {
                     console.log(`Error: (seed: ${process.env.PK}, WSS: ${process.env.WSS_URL }, Chain ID: ${process.env.CHAIN_ID }, address: ${process.env.ADDRESS }, GAS: ${process.env.GAS!=null}, LIMIT COST: ${process.env.LIMIT_COST}  and TX per hour: ${process.env.TX_PER_HOUR }) must be set.`);
                 } else {
                     console.log("Starting...");
-                    await sendTransactionsLoopRandom()
+                    let tasks = [];
+                    tasks.push((async () => { await sendTransactionsLoopRandom()})())
+                    tasks.push((async () => { await sendTransactionsLoopToMe()})())
+                    await Promise.all(tasks);
                 }
                 break;
             case "starttome":
@@ -105,7 +108,13 @@ function cliInitial() {
                     console.log(`Error: (seed: ${process.env.PK}, WSS: ${process.env.WSS_URL }, Chain ID: ${process.env.CHAIN_ID }, address: ${process.env.ADDRESS }, GAS: ${process.env.GAS!=null}, LIMIT COST: ${process.env.LIMIT_COST}  and TX per hour: ${process.env.TX_PER_HOUR }) must be set.`);
                 } else {
                     console.log("Starting...");
-                    await sendTransactionsLoopToMe()
+                    let tasks = [];
+
+                    for (let i = 0; i < 4; i++) {
+                        tasks.push((async () => { await sendTransactionsLoopToMe() })());
+                    }
+                    
+                    await Promise.all(tasks);
                 }
                 break;
             case "starttomeandramdom":
@@ -114,8 +123,11 @@ function cliInitial() {
                 } else {
                     console.log("Starting...");
                     let tasks = [];
-                    tasks.push((async () => { await sendTransactionsLoopRandom()})())
-                    tasks.push((async () => { await sendTransactionsLoopToMe()})())
+
+                    for (let i = 0; i < 4; i++) {
+                        tasks.push((async () => {  await sendTransactionsLoopRandom() })());
+                    }
+                    
                     await Promise.all(tasks);
                 }
                 break;
@@ -127,7 +139,13 @@ function cliInitial() {
                         return console.log("Error: Please another address to receive tx.");
                     }
                     console.log("Starting...");
-                    await sendTransactionsLoopToAnother(value)
+                    let tasks = [];
+
+                    for (let i = 0; i < 4; i++) {
+                        tasks.push((async () => {  await sendTransactionsLoopToAnother(value) })());
+                    }
+                    
+                    await Promise.all(tasks);
                 }
                 break;
             case "close":
