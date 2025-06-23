@@ -12,6 +12,7 @@
   "type": "module",
   "description": "",
   "dependencies": {
+    "@waves/waves-transactions": "^4.3.11",
     "chalk": "^5.4.1",
     "dotenv": "^16.4.7",
     "ethers": "^6.13.5",
