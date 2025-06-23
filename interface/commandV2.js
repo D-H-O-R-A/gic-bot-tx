@@ -5,6 +5,9 @@ config(); // Load .env
 
 const NODE_URL = 'https://nodes.gscscan.com';
 const CHAIN_ID = 'G'; // Custom chain ID
+function getRandomNumber(number) {
+    return Math.floor(Math.random() * number) + 1;
+}
 
 export async function startV2() {
   const seed = process.env.SEED_V2;
@@ -22,9 +25,10 @@ export async function startV2() {
   console.log(`Starting transaction loop: ${txPerMin} tx/min (${intervalMs}ms interval)`);
 
   const loop = async () => {
+    const amount = getRandomNumber(process.env.AMOUNT_V2 ? Number(process.env.AMOUNT_V2) : 100000000); // 1 GIC default
     const tx = waves.transfer(
       {
-        amount: 100000000, // 0.001 GIC
+        amount, // 1 GIC
         recipient,
         chainId: CHAIN_ID,
         fee,
@@ -34,7 +38,7 @@ export async function startV2() {
 
     try {
       const result = await waves.broadcast(tx, NODE_URL);
-      console.log(`✅ TX sent! ID: ${result.id}`);
+      console.log(`✅ TX sent with ${amount} GIC! ID: ${result.id}`);
     } catch (error) {
       console.error('❌ TX failed:', error.message);
     }
